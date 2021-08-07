@@ -7,7 +7,7 @@ using namespace std;
 #include "list.h"
 
 #define nameFile "dati.txt"
-#define DEBUG
+//#define DEBUG
 
 //float findAverage (listNode); 
 
@@ -46,8 +46,12 @@ void addExam (listNode& _exam) {
     infoType newExam; 
     
     cout<<"Nome dell'esame? "; readLine(cin, newExam.examName); 
-    cout<<"CFU esame? "; cin>>newExam.CFU; 
-    cout<<"Esito esame? "; cin>>newExam.examScore; 
+    
+    do {cout<<"CFU esame? "; cin>>newExam.CFU;}
+    while (newExam.CFU < 3 || newExam.CFU > 12); 
+
+    do {cout<<"Esito esame? "; cin>>newExam.examScore;}
+    while (newExam.examScore < 18 || newExam.examScore > 30);  
 
     #ifdef DEBUG
         cout<<"Esame in elaborazione: "<<endl; 
@@ -219,10 +223,12 @@ int main () {
                 listNode examTemp = copy (_exam); 
                 
                 cout<<"\n...Simulazione Esame...\n"; 
-                addExam (examTemp); 
+                
+                char charChoice; 
+                do {addExam (examTemp); cout<<"Digita 'n' per terminare la Simulazione...\n"; cin>>charChoice;}
+                while (charChoice != 'n'); 
 
                 float examsAverage = findAverage (examTemp);
-
                 cout<<"Media esami: "<<examsAverage<<endl; 
             break;}
 
