@@ -22,6 +22,10 @@ void readLine (istream &stream, char *buffer) {
 	stream.get();
 }
 
+/*!
+*\brief addExam permette l'inserimento manuale, un informazione per volta, di un nodo nella lista 
+*\param _exam lista con gli esami. Sarà modificata in questa procedura
+*/
 void addExam (listNode& _exam) {
 
     infoType newExam; 
@@ -40,6 +44,11 @@ void addExam (listNode& _exam) {
     cout<<"-Caricamento terminato-\n"; 
 }
 
+/*!
+*\brief loadExam carica tutte le informazioni sugli esami dal file 
+*\param fileName nome del file di import
+*\param _exam lista con gli esami. Sarà ripristinata in questa procedura
+*/
 void loadExam (listNode& _exam, const char* fileName) { 
 
     ifstream import (fileName); 
@@ -47,7 +56,9 @@ void loadExam (listNode& _exam, const char* fileName) {
 
     _exam = NULL;
 
-    while (import.good()) {
+    int numEOF; 
+    while (import>>numEOF) {
+
         infoType newInfo; 
 
         readLine(import, newInfo.examName); 
@@ -55,21 +66,40 @@ void loadExam (listNode& _exam, const char* fileName) {
         import>>newInfo.examScore; 
 
         addNodeInList (_exam, newInfo); 
+
+        cout<<"Caricamento esame num. "<<numEOF<<endl; 
     }
     cout<<"-Caricamento terminato-\n";
 }
 
+/*!
+*\brief viewExam stampa tutte le informazioni sugli esami
+*\param _exam lista con gli esami da stampare
+*\param stream flusso di output da considerare per la stampa
+*\param form booleano usato per distinguere stampa formattata da stampa non formattata
+*/
 void viewExam (listNode _exam, ostream& stream, bool form) {
+
+    int i=0; 
 
     while (_exam != NULL) {
 
+        i++; 
+
         if (form) viewInfo (head(_exam), stream); 
-        if (!form) stream<<_exam->exam.examName<<endl<<head(_exam).CFU<<endl<<head(_exam).examScore<<endl; 
+        if (!form) stream<<i<<endl<<_exam->exam.examName<<endl<<head(_exam).CFU<<endl<<head(_exam).examScore<<endl; 
 
         _exam = tail (_exam); 
     }
 }
 
+/*!
+* LaunchOutput stampa tutte le informazioni sugli esami, richiamando delle funzioni
+* La procedura prepara il flusso di output e lo manda alla procedura di stampa, viewExam
+*\param _exam lista con gli esami da stampare
+*\param nameStream nome tipo e flusso output da utilizzare
+*\param form booleano usato per distinguere stampa formattata da stampa non formattata
+*/
 void launchOutput (listNode _exam, bool form, const char* nameStream) {
 
     if (strcmp (nameStream, "cout") == 0)
@@ -80,6 +110,7 @@ void launchOutput (listNode _exam, bool form, const char* nameStream) {
         ofstream stream (nameStream); 
         if (!stream) {cerr<<"[!] Errore fatale in salvataggio file...\n"; return;}
 
+        stream<<countNodes(_exam)<<endl; 
         viewExam (_exam, stream, false); 
     }
 }
