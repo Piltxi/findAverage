@@ -7,6 +7,7 @@ using namespace std;
 #include "list.h"
 
 #define nameFile "dati.txt"
+#define DEBUG
 
 /*!
 *\brief readLine permette di acquisire un intera riga in input, fino al carattere '\n'
@@ -50,7 +51,11 @@ ostream& selectOutput (const char* nameStream) {
 
 void viewAll (listNode _exam, bool form, const char* nameStream) {
 
-    ostream& stream = selectOutput (nameStream); 
+    ofstream& stream = selectOutput (nameStream); 
+    
+    #ifdef DEBUG
+        stream<<"Stampa di debug...\n"; 
+    #endif
 
     if (!stream) {cerr<<"[!] Errore fatale in salvataggio file...\n"; return;}
 
@@ -103,7 +108,7 @@ int main () {
     while (true) {
 
         int intChoice; 
-        do {cout<<menu; cin>>intChoice;} while (intChoice < 1 || intChoice > 5); 
+        do {cout<<menu; cin>>intChoice;} while (intChoice < 0 || intChoice > 5); 
 
         switch (intChoice) {
 
@@ -122,6 +127,7 @@ int main () {
                     cout<<"Digita 's' per caricare le informazioni da un file preciso...\n"
                           "Digita 'n' per caricare le informazioni dal file predefinito...\n"
                           "Premi un pulsante per continuare> s/n "; 
+                          cin>>charChoice; 
                 } while (charChoice != 's' && charChoice != 'n'); 
 
                 if (charChoice == 's') {
