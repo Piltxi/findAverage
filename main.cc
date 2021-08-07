@@ -51,7 +51,7 @@ ostream& selectOutput (const char* nameStream) {
 
 void viewAll (listNode _exam, bool form, const char* nameStream) {
 
-    ofstream& stream = selectOutput (nameStream); 
+    ostream& stream = selectOutput (nameStream); 
     
     #ifdef DEBUG
         stream<<"Stampa di debug...\n"; 
@@ -77,9 +77,10 @@ void loadExam (listNode& _exam, const char* fileName) {
 
     _exam = NULL;
 
-    int numEOF; 
-    while (import>>numEOF) {
+    //int numEOF; 
+    //while (import>>numEOF) {
 
+    while (import.good()) {
         infoType newInfo; 
 
         readLine(import, newInfo.examName); 
@@ -88,9 +89,27 @@ void loadExam (listNode& _exam, const char* fileName) {
 
         addNodeInList (_exam, newInfo); 
 
-        cout<<"Caricamento esame num. "<<numEOF<<endl; 
+        //cout<<"Caricamento esame num. "<<numEOF<<endl; 
     }
     cout<<"-Caricamento terminato-\n";
+}
+
+void viewExam (listNode _exam, ostream& stream, bool form) {
+
+}
+
+void launchOutput (listNode _exam, bool form, const char* nameStream) {
+
+    if (strcmp (nameStream, "cout") == 0)
+        {viewExam (_exam, cout, true); return;}  
+
+    else {
+    
+        ofstream stream (nameStream); 
+        if (!stream) {cerr<<"[!] Errore fatale in salvataggio file...\n"; return;}
+
+        viewExam (_exam, stream, false); 
+    }
 }
 
 int main () {
