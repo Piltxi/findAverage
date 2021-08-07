@@ -40,45 +40,12 @@ void addExam (listNode& _exam) {
     cout<<"-Caricamento terminato-\n"; 
 }
 
-ostream& selectOutput (const char* nameStream) {
-
-    if (strcmp (nameStream, "cout") == 0)
-        return cout; 
-
-    ofstream stream (nameStream); 
-    return stream; 
-}
-
-void viewAll (listNode _exam, bool form, const char* nameStream) {
-
-    ostream& stream = selectOutput (nameStream); 
-    
-    #ifdef DEBUG
-        stream<<"Stampa di debug...\n"; 
-    #endif
-
-    if (!stream) {cerr<<"[!] Errore fatale in salvataggio file...\n"; return;}
-
-    if (form) stream<<"Numero esami sostenuti: "<<countNodes(_exam)<<endl; 
-
-    for (int i=0; _exam != NULL; i++, _exam = tail (_exam)) {
-        if (form) viewInfo (head(_exam), stream); 
-        
-        if (!form) stream<<i<<endl<<head(_exam).examName<<endl<<head(_exam).CFU<<endl<<head(_exam).examScore<<endl; 
-    }
-
-    if (form) stream<<"Ciao, al prossimo caricamento...\n"; 
-}
-
 void loadExam (listNode& _exam, const char* fileName) { 
 
     ifstream import (fileName); 
     if (!import) {cerr<<"[!] Errore fatale in salvataggio file...\n"; return;}
 
     _exam = NULL;
-
-    //int numEOF; 
-    //while (import>>numEOF) {
 
     while (import.good()) {
         infoType newInfo; 
@@ -88,14 +55,19 @@ void loadExam (listNode& _exam, const char* fileName) {
         import>>newInfo.examScore; 
 
         addNodeInList (_exam, newInfo); 
-
-        //cout<<"Caricamento esame num. "<<numEOF<<endl; 
     }
     cout<<"-Caricamento terminato-\n";
 }
 
 void viewExam (listNode _exam, ostream& stream, bool form) {
 
+    while (_exam != NULL) {
+
+        if (form) viewInfo (head(_exam), stream); 
+        if (!form) stream<<_exam->exam.examName<<endl<<head(_exam).CFU<<endl<<head(_exam).examScore<<endl; 
+
+        _exam = tail (_exam); 
+    }
 }
 
 void launchOutput (listNode _exam, bool form, const char* nameStream) {
@@ -136,7 +108,7 @@ int main () {
             break; 
 
             case 2:
-                viewAll (_exam, false, nameFile); 
+                launchOutput (_exam, false, nameFile); 
             break; 
 
             case 3: 
@@ -166,11 +138,11 @@ int main () {
             break;
 
             case 5: 
-                viewAll (_exam, true, "cout");
+                launchOutput (_exam, true, "cout");
             break;
 
             case 0: 
-                cout<<"Ci vediamo la prossima volta...\n"; viewAll (_exam, false, nameFile);
+                cout<<"Ci vediamo la prossima volta...\n"; launchOutput (_exam, false, nameFile);
                 return 0; 
             break;
         }
