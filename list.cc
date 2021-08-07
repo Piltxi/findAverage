@@ -69,9 +69,10 @@ listNode insertNode (listNode _nodes, listNode _nodeToInsert) {
 
         listNode nodeTemp = _nodes; 
 
-        while (tail(_nodes) != NULL)
-            _nodes = tail (_nodes); 
+        while (tail(nodeTemp) != NULL)
+            nodeTemp = tail (nodeTemp); 
 
+        _nodeToInsert->prev = nodeTemp; 
         nodeTemp->next = _nodeToInsert; 
         
         return _nodes; 
@@ -107,4 +108,12 @@ void printList (listNode _nodes) {
         viewInfo (head(_nodes), cout);
         printList (tail (_nodes));
     }
+}
+
+int countNodes (listNode _nodes) {
+
+    if (_nodes == NULL)
+        return 0; 
+
+    return 1 + countNodes (tail(_nodes)); 
 }

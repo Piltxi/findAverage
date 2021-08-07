@@ -21,3 +21,4 @@ static listNode insertNode (listNode, listNode);
 listNode delete_elem(listNode, listNode);
 void  addNodeInList (listNode&, infoType);
 void printList (listNode);
+int countNodes (listNode); 
