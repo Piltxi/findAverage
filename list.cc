@@ -117,3 +117,26 @@ int countNodes (listNode _nodes) {
 
     return 1 + countNodes (tail(_nodes)); 
 }
+
+listNode copy(listNode l1){
+
+    listNode l=NULL;
+
+    elem* curr; elem* prev=NULL;
+
+    while(l1 != NULL) {
+        
+        curr = new elem ;
+        curr->exam = head(l1);
+        curr->next=NULL;
+        
+        if(prev==NULL)
+            l=curr;
+        else
+            prev->next=curr;
+        
+        prev=curr;
+        l1=tail(l1);
+    }
+    return l;
+}

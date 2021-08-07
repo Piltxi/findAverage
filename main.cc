@@ -9,6 +9,14 @@ using namespace std;
 #define nameFile "dati.txt"
 #define DEBUG
 
+int countCFU (listNode _exam) {
+
+    if (_exam == NULL)
+        return 0; 
+
+    return _exam->exam.CFU + countCFU(tail(_exam)); 
+} 
+
 /*!
 *\brief readLine permette di acquisire un intera riga in input, fino al carattere '\n'
 *\param stream flusso di input da considerare
@@ -114,6 +122,32 @@ void launchOutput (listNode _exam, bool form, const char* nameStream) {
     }
 }
 
+float findAverage (listNode _exam) {
+
+    if (_exam == NULL)
+        {cout<<"Lista vuota in ingresso...\n"; return 0;}
+
+    int CFU = countCFU (_exam);
+
+    #ifdef DEBUG
+        cout<<"Numero di CFU trovati: "<<CFU<<endl; 
+    #endif
+    
+    float average = 0; 
+    while (_exam != NULL) {
+
+        average += (_exam->exam.examScore * _exam->exam.CFU); 
+
+        #ifdef DEBUG
+            cout<<"Somma in lavorazione: "<<average<<endl; 
+        #endif
+
+        _exam = tail (_exam); 
+    }
+    
+    return (float)average/CFU; 
+}
+
 int main () {
 
     listNode _exam = NULL; 
@@ -163,9 +197,16 @@ int main () {
 
             break;
 
-            case 4: 
-                return 0; 
-            break;
+            case 4: {
+                listNode examTemp = copy (_exam); 
+                
+                cout<<"\n...Simulazione Esame...\n"; 
+                addExam (examTemp); 
+
+                float examsAverage = findAverage (examTemp);
+
+                cout<<"Media esami: "<<examsAverage<<endl; 
+            break;}
 
             case 5: 
                 launchOutput (_exam, true, "cout");

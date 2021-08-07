@@ -18,6 +18,8 @@ static listNode newNode (infoType);
 static listNode insertHead (listNode, listNode);
 static listNode insertNode (listNode, listNode);
 
+listNode copy (listNode); 
+
 listNode delete_elem(listNode, listNode);
 void  addNodeInList (listNode&, infoType);
 void printList (listNode);
