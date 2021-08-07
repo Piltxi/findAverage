@@ -1,4 +1,4 @@
-exam: info.o list.o main.o
+exam: info.o list.o main.o 
 	g++ -o exam info.o list.o main.o
 
 info.o: info.cc info.h
