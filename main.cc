@@ -110,7 +110,6 @@ void launchOutput (listNode _exam, bool form, const char* nameStream) {
         ofstream stream (nameStream); 
         if (!stream) {cerr<<"[!] Errore fatale in salvataggio file...\n"; return;}
 
-        stream<<countNodes(_exam)<<endl; 
         viewExam (_exam, stream, false); 
     }
 }
