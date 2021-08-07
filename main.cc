@@ -9,7 +9,7 @@ using namespace std;
 #define nameFile "dati.txt"
 #define DEBUG
 
-float findAverage (listNode); 
+//float findAverage (listNode); 
 
 /*!
 *\brief countCFU conta i CFU dei singoli esami registrati 
@@ -60,6 +60,37 @@ void addExam (listNode& _exam) {
 }
 
 /*!
+*\brief findAverage calcola la media degli esami sostenuti
+*\param _exam lista con gli esami da considerare
+*\return valore numerico della media accademica
+*/
+float findAverage (listNode _exam) {
+
+    if (_exam == NULL)
+        {cout<<"Lista vuota in ingresso...\n"; return 0;}
+
+    int CFU = countCFU (_exam);
+
+    #ifdef DEBUG
+        cout<<"Numero di CFU trovati: "<<CFU<<endl; 
+    #endif
+    
+    float average = 0; 
+    while (_exam != NULL) {
+
+        average += (_exam->exam.examScore * _exam->exam.CFU); 
+
+        #ifdef DEBUG
+            cout<<"Somma in lavorazione: "<<average<<endl; 
+        #endif
+
+        _exam = tail (_exam); 
+    }
+    
+    return (float)average/CFU; 
+}
+
+/*!
 *\brief loadExam carica tutte le informazioni sugli esami dal file 
 *\param fileName nome del file di import
 *\param _exam lista con gli esami. Sarà ripristinata in questa procedura
@@ -97,6 +128,8 @@ void viewExam (listNode _exam, ostream& stream, bool form) {
 
     int i=0; 
 
+    if (form) stream<<"Numero esami sostenuti: "<<countNodes(_exam)<<"\tMedia esami: "<<findAverage(_exam)<<endl; 
+
     while (_exam != NULL) {
 
         i++; 
@@ -120,8 +153,6 @@ void launchOutput (listNode _exam, bool form, const char* nameStream) {
     if (strcmp (nameStream, "cout") == 0) {
         
         viewExam (_exam, cout, true); 
-        cout<<"Media esami: "<<findAverage(_exam)<<endl; 
-
         return;
     }  
 
@@ -132,32 +163,6 @@ void launchOutput (listNode _exam, bool form, const char* nameStream) {
 
         viewExam (_exam, stream, form); 
     }
-}
-
-float findAverage (listNode _exam) {
-
-    if (_exam == NULL)
-        {cout<<"Lista vuota in ingresso...\n"; return 0;}
-
-    int CFU = countCFU (_exam);
-
-    #ifdef DEBUG
-        cout<<"Numero di CFU trovati: "<<CFU<<endl; 
-    #endif
-    
-    float average = 0; 
-    while (_exam != NULL) {
-
-        average += (_exam->exam.examScore * _exam->exam.CFU); 
-
-        #ifdef DEBUG
-            cout<<"Somma in lavorazione: "<<average<<endl; 
-        #endif
-
-        _exam = tail (_exam); 
-    }
-    
-    return (float)average/CFU; 
 }
 
 int main () {
@@ -185,6 +190,7 @@ int main () {
 
             case 2:
                 launchOutput (_exam, false, nameFile); 
+                launchOutput (_exam, true, "esami_form.txt"); 
             break; 
 
             case 3: 
