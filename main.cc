@@ -9,6 +9,13 @@ using namespace std;
 #define nameFile "dati.txt"
 #define DEBUG
 
+float findAverage (listNode); 
+
+/*!
+*\brief countCFU conta i CFU dei singoli esami registrati 
+*\param _exam lista con gli esami registrati
+*\return numero di cfu corrispondenti agli esami sostenuti
+*/
 int countCFU (listNode _exam) {
 
     if (_exam == NULL)
@@ -110,15 +117,20 @@ void viewExam (listNode _exam, ostream& stream, bool form) {
 */
 void launchOutput (listNode _exam, bool form, const char* nameStream) {
 
-    if (strcmp (nameStream, "cout") == 0)
-        {viewExam (_exam, cout, true); return;}  
+    if (strcmp (nameStream, "cout") == 0) {
+        
+        viewExam (_exam, cout, true); 
+        cout<<"Media esami: "<<findAverage(_exam)<<endl; 
+
+        return;
+    }  
 
     else {
     
         ofstream stream (nameStream); 
         if (!stream) {cerr<<"[!] Errore fatale in salvataggio file...\n"; return;}
 
-        viewExam (_exam, stream, false); 
+        viewExam (_exam, stream, form); 
     }
 }
 
