@@ -35,7 +35,7 @@ void addExam (listNode& _exam) {
 * countCFU conta i CFU dei singoli esami registrati 
 * la funzione distingue esami di profitto e idoneità tramite il parametro all 
 *\param _exam lista con gli esami registrati
-*\param all booleano utile a considerare tutti gli esami o solo le idoneità
+*\param all booleano utile a considerare tutti gli esami o solo quelli di profitto
 *\return numero di cfu corrispondenti agli esami sostenuti
 */
 int countCFU (listNode _exam, const bool all) {
@@ -66,7 +66,7 @@ float findAverage (listNode _exam) {
     #endif
     
     float average = 0; 
-    
+
     while (_exam != NULL) {
 
         if (_exam->exam.examScore != 1) average += (_exam->exam.examScore * _exam->exam.CFU); 
