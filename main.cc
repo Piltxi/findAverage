@@ -84,13 +84,14 @@ int main () {
                    "\nDigita 3-> Caricare le informazioni da file..."
                    "\nDigita 4-> Avviare la simulazione per un nuovo esame..."
                    "\nDigita 5-> Stampa esami conclusi..."
+                   "\nDigita 6-> Inserimento esami conclusi e generazione file informazioni..."
                    "\nDigita 0-> Uscire -Salva le informazioni all'interno del file-..."
                    "\nDigita un numero per continuare..."; 
 
     while (true) {
 
         int intChoice; 
-        do {cout<<endl<<menu; cin>>intChoice; cout<<endl;} while (intChoice < 0 || intChoice > 5); 
+        do {cout<<endl<<menu; cin>>intChoice; cout<<endl;} while (intChoice < 0 || intChoice > 6); 
 
         switch (intChoice) {
 
@@ -145,6 +146,14 @@ int main () {
             case 5: 
                 launchOutput (_exam, true, "cout");
             break;
+
+            case 6: 
+
+                cout<<"Processo di inizializzazione...\n"; 
+                _exam = loadAll(); 
+                launchOutput (_exam, false, nameFile);
+
+            break; 
 
             case 0: 
                 cout<<"Ci vediamo la prossima volta...\n"; launchOutput (_exam, false, nameFile);

@@ -28,7 +28,7 @@ void addExam (listNode& _exam) {
 
     addNodeInList (_exam, newExam); 
 
-    cout<<"-Caricamento terminato-\n"; 
+    cout<<"-esame caricato-\n"; 
 }
 
 /*!
@@ -102,4 +102,27 @@ void viewExam (listNode _exam, ostream& stream, bool form) {
 
         _exam = tail (_exam); 
     }
+}
+
+/*!
+* loadAll carica tutte le informazioni sugli esami
+* è utile al primo lancio del programma, in assenza del file dati.txt, contentente le informazioni sugli esami sostenuti. 
+* in alternativa, è necessario lanciare il programma con il file presente
+*\return lista degli esami caricata
+*/
+listNode loadAll () {
+
+    listNode _exam = NULL; 
+
+    char charChoice; 
+
+    do {
+        cout<<"Premi un pulsante per continuare... [e -> exit] "; cin>>charChoice; 
+
+        if (charChoice != 'e')
+            addExam(_exam); 
+
+    } while (charChoice != 'e'); 
+
+    return _exam; 
 }
