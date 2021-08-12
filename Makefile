@@ -1,5 +1,5 @@
-exam: info.o list.o main.o exam.o
-	g++ -o exam info.o list.o main.o exam.o
+findAverage: info.o list.o main.o exam.o
+	g++ -o findAverage info.o list.o main.o exam.o
 
 info.o: info.cc info.h
 	g++ -c info.cc
@@ -11,13 +11,14 @@ exam.o: exam.cc exam.h list.h info.h
 main.o: main.cc list.h info.h exam.h
 	g++ -c main.cc
 
+
 .PHONY: clean cleanall depend
 
 clean: 
 	rm -f *.o
 
 cleanall: 
-	rm -f *.out
+	rm -f *.out *.o
 
 depend: 
 	g++ -MM info.cc list.cc main.cc > dependMake

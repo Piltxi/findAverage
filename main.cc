@@ -6,9 +6,7 @@ using namespace std;
 #include "exam.h"
 
 #define nameFile "dati.txt"
-//#define DEBUG
-
-//float findAverage (listNode); 
+//#define DEBUG -> Decommentare per alcune stampe di debug
 
 /*!
 *\brief readLine permette di acquisire un intera riga in input, fino al carattere '\n'
@@ -24,32 +22,6 @@ void readLine (istream &stream, char *buffer) {
 }
 
 /*!
-*\brief addExam permette l'inserimento manuale, un informazione per volta, di un nodo nella lista 
-*\param _exam lista con gli esami. Sarà modificata in questa procedura
-*/
-void addExam (listNode& _exam) {
-
-    infoType newExam; 
-    
-    cout<<"Nome dell'esame? "; readLine(cin, newExam.examName); 
-    
-    do {cout<<"CFU esame? "; cin>>newExam.CFU;}
-    while (newExam.CFU < 3 || newExam.CFU > 12); 
-
-    do {cout<<"Esito esame? "; cin>>newExam.examScore;}
-    while (newExam.examScore < 18 || newExam.examScore > 30);  
-
-    #ifdef DEBUG
-        cout<<"Esame in elaborazione: "<<endl; 
-        viewInfo (newExam, cout);
-    #endif
-
-    addNodeInList (_exam, newExam); 
-
-    cout<<"-Caricamento terminato-\n"; 
-}
-
-/*!
 *\brief loadExam carica tutte le informazioni sugli esami dal file 
 *\param fileName nome del file di import
 *\param _exam lista con gli esami. Sarà ripristinata in questa procedura
@@ -60,6 +32,8 @@ void loadExam (listNode& _exam, const char* fileName) {
     if (!import) {cerr<<"[!] Errore fatale in salvataggio file...\n"; return;}
 
     _exam = NULL;
+
+    cout<<endl<<"Caricamento Informazioni"; 
 
     int numEOF; 
     while (import>>numEOF) {
@@ -72,13 +46,13 @@ void loadExam (listNode& _exam, const char* fileName) {
 
         addNodeInList (_exam, newInfo); 
 
-        cout<<"Caricamento esame num. "<<numEOF<<endl; 
+        cout<<"."; 
     }
-    cout<<"-Caricamento terminato-\n";
+    cout<<endl<<"-Caricamento terminato-\n";
 }
 
 /*!
-* LaunchOutput stampa tutte le informazioni sugli esami, richiamando delle funzioni
+* launchOutput stampa tutte le informazioni sugli esami, richiamando delle funzioni
 * La procedura prepara il flusso di output e lo manda alla procedura di stampa, viewExam
 *\param _exam lista con gli esami da stampare
 *\param nameStream nome tipo e flusso output da utilizzare
@@ -86,11 +60,9 @@ void loadExam (listNode& _exam, const char* fileName) {
 */
 void launchOutput (listNode _exam, bool form, const char* nameStream) {
 
-    if (strcmp (nameStream, "cout") == 0) {
-        
-        viewExam (_exam, cout, true); 
-        return;
-    }  
+    if (strcmp (nameStream, "cout") == 0)
+        viewExam (_exam, cout, form);
+    
 
     else {
     
@@ -98,16 +70,18 @@ void launchOutput (listNode _exam, bool form, const char* nameStream) {
         if (!stream) {cerr<<"[!] Errore fatale in salvataggio file...\n"; return;}
 
         viewExam (_exam, stream, form); 
-    }
+        stream.close(); 
+    } 
 }
 
 int main () {
 
     listNode _exam = NULL; 
+    loadExam (_exam, nameFile);
 
     char menu [] = "Digita 1-> Inserire un nuovo esame..."
                    "\nDigita 2-> Salvare informazioni memorizzate..."
-                   "\nDigita 3-> Caricare le informazioni dal file..."
+                   "\nDigita 3-> Caricare le informazioni da file..."
                    "\nDigita 4-> Avviare la simulazione per un nuovo esame..."
                    "\nDigita 5-> Stampa esami conclusi..."
                    "\nDigita 0-> Uscire -Salva le informazioni all'interno del file-..."
@@ -116,7 +90,7 @@ int main () {
     while (true) {
 
         int intChoice; 
-        do {cout<<menu; cin>>intChoice;} while (intChoice < 0 || intChoice > 5); 
+        do {cout<<endl<<menu; cin>>intChoice; cout<<endl;} while (intChoice < 0 || intChoice > 5); 
 
         switch (intChoice) {
 
@@ -125,8 +99,10 @@ int main () {
             break; 
 
             case 2:
+
                 launchOutput (_exam, false, nameFile); 
                 launchOutput (_exam, true, "esami_form.txt"); 
+            
             break; 
 
             case 3: 
@@ -142,7 +118,7 @@ int main () {
                 if (charChoice == 's') {
 
                     char fileName [nameSize]; 
-                    cout<<"Inserisci il nome del file> "; cin>>fileName; 
+                    cout<<"Inserisci il nome del file di caricamento> "; cin>>fileName; 
                     
                     loadExam (_exam, fileName); 
                 }
@@ -152,6 +128,7 @@ int main () {
             break;
 
             case 4: {
+
                 listNode examTemp = copy (_exam); 
                 
                 cout<<"\n...Simulazione Esame...\n"; 
@@ -162,7 +139,8 @@ int main () {
 
                 float examsAverage = findAverage (examTemp);
                 cout<<"Media esami: "<<examsAverage<<endl; 
-            break;}
+
+            break; }
 
             case 5: 
                 launchOutput (_exam, true, "cout");
@@ -174,6 +152,6 @@ int main () {
             break;
         }
     }
-    
+
     return 0; 
 }

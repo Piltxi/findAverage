@@ -13,5 +13,11 @@ void copyInfo (infoType& newInfo, infoType infoToCopy) {
 }
 
 void viewInfo (infoType infoToPrint, ostream& stream) {
-    stream<<"Nome dell'esame: "<<infoToPrint.examName<<"\tEsito: "<<infoToPrint.examScore<<"\tCFU: "<<infoToPrint.CFU<<endl;
+    
+    stream<<"Nome Esame: "<<infoToPrint.examName<<"\t"; 
+    
+    if (infoToPrint.examScore == 1) cout<<"|Esito: IDO"; 
+    else cout<<"|Esito: "<<infoToPrint.examScore; 
+    
+    cout<<"|\tCFU: "<<infoToPrint.CFU<<endl;
 } 
