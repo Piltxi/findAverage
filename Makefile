@@ -18,7 +18,7 @@ clean:
 	rm -f *.o
 
 cleanall: 
-	rm -f *.out *.o
+	rm -f *.out *.o exam findAverage
 
 depend: 
 	g++ -MM info.cc list.cc main.cc > dependMake
